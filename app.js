@@ -8,7 +8,7 @@ const path = require('path');
 const app = express();
 
 // Koneksi MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/keuanganDB', {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log('✅ MongoDB terhubung'))
