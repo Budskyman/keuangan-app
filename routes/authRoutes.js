@@ -76,10 +76,6 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // ✅ SET SESSION
-    req.session.userId = user._id;
-    req.session.user = user;
-
     res.redirect('/');
 
   } catch (err) {
