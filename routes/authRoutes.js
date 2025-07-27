@@ -77,6 +77,7 @@ router.post('/login', async (req, res) => {
     }
 
     res.redirect('/');
+    
   } catch (err) {
     res.render('login', {
       error: 'Terjadi kesalahan saat login',

@@ -22,17 +22,18 @@
     <% if (typeof error !== 'undefined' && error) { %>
       <div class="alert alert-danger text-center"><%= error %></div>
     <% } %>
-    <form method="POST" action="/register">
+        <form method="POST" action="/register">
       <div class="mb-3">
         <label>Username</label>
-        <input type="text" name="username" required class="form-control" />
+        <input type="text" name="username" required class="form-control <%= error ? 'is-invalid' : '' %>" />
       </div>
       <div class="mb-3">
         <label>Password</label>
-        <input type="password" name="password" required class="form-control" />
+        <input type="password" name="password" required class="form-control <%= error ? 'is-invalid' : '' %>" />
       </div>
       <button class="btn btn-success w-100">Daftar</button>
     </form>
+
     <p class="text-center mt-3">Sudah punya akun? <a href="/login">Login</a></p>
   </div>
 </body>
