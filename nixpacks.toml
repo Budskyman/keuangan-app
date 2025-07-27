@@ -6,3 +6,11 @@ cmds = ["npm install"]
 
 [phases.start]
 cmds = ["node app.js"]
+[phases.setup]
+nixPkgs = ["nodejs_18"]
+
+[phases.install]
+cmds = ["npm install"]
+
+[phases.start]
+cmds = ["npm start"]
