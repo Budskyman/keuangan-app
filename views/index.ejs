@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+  <%- include('partials/head') %>
+  <body class="bg-light">
+    <%- include('partials/navbar') %>
+    <div class="container mt-5">
+      <h2 class="text-center mb-4">Dashboard Keuangan</h2>
+
+      <!-- Filter Tanggal -->
+      <form class="row g-2 mb-4" method="get" action="/">
+        <div class="col-md-4">
+          <input type="date" name="start" value="<%= start || '' %>" class="form-control" />
+        </div>
+        <div class="col-md-4">
+          <input type="date" name="end" value="<%= end || '' %>" class="form-control" />
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-primary w-100" type="submit">Filter</button>
+        </div>
+      </form>
+
+      <!-- Saldo -->
+      <div class="alert alert-info text-center fs-5 shadow-sm">
+        💰 Saldo saat ini: <strong>Rp <%= balance.toLocaleString('id-ID') %></strong>
+      </div>
+
+      <!-- Doughnut Chart -->
+      <div class="card shadow-sm mb-5">
+        <div class="card-body text-center">
+          <h5 class="mb-4">Rangkuman Pemasukan vs Pengeluaran</h5>
+          <div style="max-width: 300px; margin: auto;">
+            <canvas id="donutChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabel Transaksi -->
+      <div class="table-responsive mb-5">
+        <table class="table table-bordered table-hover align-middle shadow-sm">
+          <thead class="table-dark">
+            <tr>
+              <th>Tanggal</th>
+              <th>Jenis</th>
+              <th>Kategori</th>
+              <th>Nominal</th>
+              <th>Catatan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% transactions.forEach(tx => { %>
+              <tr>
+                <td><%= new Date(tx.date).toLocaleDateString('id-ID') %></td>
+                <td>
+                  <% if (tx.type === 'income') { %>
+                    <span class="badge bg-success">Pemasukan</span>
+                  <% } else { %>
+                    <span class="badge bg-danger">Pengeluaran</span>
+                  <% } %>
+                </td>
+                <td><%= tx.category %></td>
+                <td>Rp <%= tx.amount.toLocaleString('id-ID') %></td>
+                <td><%= tx.note || '-' %></td>
+                <td>
+                  <a href="/edit/<%= tx._id %>" class="btn btn-warning btn-sm">Edit</a>
+                  <form method="POST" action="/delete/<%= tx._id %>?_method=DELETE" class="d-inline">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin hapus?')">Hapus</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Doughnut Chart Script -->
+    <script>
+      const donutCtx = document.getElementById('donutChart').getContext('2d');
+
+      const totalIncome = <%= chartIncome.reduce((a, b) => a + b, 0) %>;
+      const totalExpense = <%= chartExpense.reduce((a, b) => a + b, 0) %>;
+
+      new Chart(donutCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Pemasukan', 'Pengeluaran'],
+          datasets: [{
+            data: [totalIncome, totalExpense],
+            backgroundColor: ['#28a745', '#dc3545'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

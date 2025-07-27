@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head') %>
+  <style>
+    .dashboard-box {
+      max-width: 600px;
+      margin: 6vh auto;
+      padding: 2rem;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <%- include('partials/navbar') %>
+
+  <div class="dashboard-box">
+    <h2>Selamat datang, <%= currentUser.username %>!</h2>
+    <p>Ini adalah halaman utama aplikasi pengelolaan keuangan pribadimu.</p>
+
+    <div class="mt-4">
+      <a href="/add" class="btn btn-success me-2">➕ Tambah Transaksi</a>
+      <a href="/logout" class="btn btn-outline-danger">Logout</a>
+    </div>
+  </div>
+</body>
+</html>
